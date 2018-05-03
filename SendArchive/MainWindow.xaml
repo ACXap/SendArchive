@@ -5,9 +5,112 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SendArchive"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
+    Title="{DynamicResource Title}"
     Width="800"
     Height="450"
     mc:Ignorable="d">
-    <Grid />
+
+    <!--  Main Grid  -->
+    <Grid>
+
+        <!--  Main TabControl  -->
+        <TabControl>
+
+            <!--  Tab for writing a letter  -->
+            <TabItem Header="{DynamicResource TabItemLetter}">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="75" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="100" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Grid Letter header  -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Button send email  -->
+                        <Button
+                            Grid.Column="0"
+                            Margin="6"
+                            Content="{DynamicResource ButtonLetterSend}" />
+
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <!--  TextBlock whom email  -->
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Style="{StaticResource TextLetterHeader}"
+                                Text="{DynamicResource TextBlockLetterWhom}" />
+
+                            <!--  TextBlock subject email  -->
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Style="{StaticResource TextLetterHeader}"
+                                Text="{DynamicResource textBlockLetterSubject}" />
+
+                            <!--  TextBox for recipient address  -->
+                            <TextBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Style="{StaticResource TextBoxLetterHeader}" />
+
+                            <!--  TextBox for subject email  -->
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Style="{StaticResource TextBoxLetterHeader}" />
+
+                        </Grid>
+                    </Grid>
+
+                    <!--  TextBox Letter  -->
+                    <TextBox Grid.Row="1" Margin="2" />
+
+                    <!--  Grid for signatures of the letter  -->
+                    <Grid Grid.Row="2" Margin="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="{DynamicResource TextBlockLeterSignature}" />
+
+                        <!--  TextBox for signatures letter  -->
+                        <TextBox Grid.Row="1" />
+
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+
+            <!--  Tab for working with files  -->
+            <TabItem Header="{DynamicResource TabItemFile}" />
+
+            <!--  Tab to view the result  -->
+            <TabItem Header="{DynamicResource TabItemResult}" />
+
+            <!--  Tab for settings  -->
+            <TabItem Header="{DynamicResource TabItemSettings}" />
+
+            <!--  Tab for help  -->
+            <TabItem Header="{DynamicResource TabItemHelp}" />
+
+        </TabControl>
+    </Grid>
+
 </Window>
