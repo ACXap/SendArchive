@@ -9,6 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Language/RuDefault.xaml" />
                 <ResourceDictionary Source="Style/Text.xaml" />
+                <ResourceDictionary Source="Style/Button.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

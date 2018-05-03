@@ -2,7 +2,6 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:SendArchive.Language"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!--  Title MainWindow  -->
@@ -18,9 +17,31 @@
     <!--  Letter Header  -->
     <sys:String x:Key="ButtonLetterSend">Отправить</sys:String>
     <sys:String x:Key="TextBlockLetterWhom">Кому</sys:String>
-    <sys:String x:Key="textBlockLetterSubject">Тема</sys:String>
+    <sys:String x:Key="TextBlockLetterSubject">Тема</sys:String>
 
     <!--  Letter Signature  -->
     <sys:String x:Key="TextBlockLeterSignature">Подпись:</sys:String>
+
+    <!--  File list  -->
+    <sys:String x:Key="TextBlockFileList">Список файлов</sys:String>
+    <sys:String x:Key="ButtonFileAddFile">Выбрать файлы</sys:String>
+    <sys:String x:Key="ButtonFileClearList">Очистить список</sys:String>
+    <!--  File list DataGrid  -->
+    <sys:String x:Key="TextBlockDataGridHeaderNameFiles">Имя файла</sys:String>
+    <sys:String x:Key="TextBlockDataGridHeaderPathFiles">Путь файла</sys:String>
+    <sys:String x:Key="TextBlockDataGridHeaderSizeFiles">Размер файла</sys:String>
+
+    <!--  Result list  -->
+    <sys:String x:Key="TextBlockResultList">Результаты</sys:String>
+    <sys:String x:Key="ButtonResultClearList">Очистить список</sys:String>
+    <!--  Result list DataGrid  -->
+    <sys:String x:Key="TextBlockDataGridHeaderLetterSubject">Письмо</sys:String>
+    <sys:String x:Key="TextBlockDataGridHeaderResult">Результат</sys:String>
+    <sys:String x:Key="TextBlockDataGridHeaderDateTime">Дата</sys:String>
+
+    <!--  Settings  -->
+    <sys:String x:Key="TabItemMainSettings">Основные</sys:String>
+    <sys:String x:Key="ButtonSettingsSave">Сохранить</sys:String>
+    <sys:String x:Key="ButtonSettingsLoadDefault">По умолчанию</sys:String>
 
 </ResourceDictionary>

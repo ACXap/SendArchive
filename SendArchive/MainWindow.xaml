@@ -19,6 +19,7 @@
             <!--  Tab for writing a letter  -->
             <TabItem Header="{DynamicResource TabItemLetter}">
 
+                <!--  Main Grid Tab letter  -->
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="75" />
@@ -36,8 +37,8 @@
                         <!--  Button send email  -->
                         <Button
                             Grid.Column="0"
-                            Margin="6"
-                            Content="{DynamicResource ButtonLetterSend}" />
+                            Content="{DynamicResource ButtonLetterSend}"
+                            Style="{StaticResource ButtonLetterHeader}" />
 
                         <Grid Grid.Column="1">
                             <Grid.ColumnDefinitions>
@@ -61,7 +62,7 @@
                                 Grid.Row="1"
                                 Grid.Column="0"
                                 Style="{StaticResource TextLetterHeader}"
-                                Text="{DynamicResource textBlockLetterSubject}" />
+                                Text="{DynamicResource TextBlockLetterSubject}" />
 
                             <!--  TextBox for recipient address  -->
                             <TextBox
@@ -99,16 +100,256 @@
             </TabItem>
 
             <!--  Tab for working with files  -->
-            <TabItem Header="{DynamicResource TabItemFile}" />
+            <TabItem Header="{DynamicResource TabItemFile}">
+
+                <!--  Main Grid Tab Files  -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Grid Files Header  -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Style="{StaticResource TextFileList}" Text="{DynamicResource TextBlockFileList}" />
+
+                        <!--  Buttons management file list  -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+
+                            <!--  Button add files  -->
+                            <Button Content="{DynamicResource ButtonFileAddFile}" Style="{StaticResource ButtonFile}" />
+
+                            <!--  Button clear file list  -->
+                            <Button Content="{DynamicResource ButtonFileClearList}" Style="{StaticResource ButtonFile}" />
+                        </StackPanel>
+
+                    </Grid>
+
+                    <!--  DataGrid list files  -->
+                    <DataGrid
+                        Grid.Row="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False">
+                        <DataGrid.Columns>
+
+                            <!--  Column NameFiles  -->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource TextBlockDataGridHeaderNameFiles}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+
+                                            <!--  Image icon file  -->
+                                            <Image />
+
+                                            <!--  TextBlock name file  -->
+                                            <TextBlock />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!--  Column PathFiles  -->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource TextBlockDataGridHeaderPathFiles}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+
+                                        <!--  TextBlock path files  -->
+                                        <TextBlock />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!--  Column SizeFiles  -->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource TextBlockDataGridHeaderSizeFiles}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+
+                                        <!--  TextBlock size files  -->
+                                        <TextBlock />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!--  Column delFiles  -->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+
+                                        <!--  Button del files  -->
+                                        <Button />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
 
             <!--  Tab to view the result  -->
-            <TabItem Header="{DynamicResource TabItemResult}" />
+            <TabItem Header="{DynamicResource TabItemResult}">
+
+                <!--  Main Grid Tab result  -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Grid Result Header  -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Style="{StaticResource TextFileList}" Text="{DynamicResource TextBlockResultList}" />
+
+                        <!--  Button clear result list  -->
+                        <Button
+                            Grid.Column="1"
+                            Content="{DynamicResource ButtonResultClearList}"
+                            Style="{StaticResource ButtonFile}" />
+
+                    </Grid>
+
+                    <!--  DataGrid list files  -->
+                    <DataGrid
+                        Grid.Row="1"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False">
+                        <DataGrid.Columns>
+
+                            <!--  Column letter  -->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource TextBlockDataGridHeaderLetterSubject}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <!--  TextBlock letter subject  -->
+                                        <TextBlock />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!--  Column PathFiles  -->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource TextBlockDataGridHeaderResult}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+
+                                        <!--  TextBlock result send letter  -->
+                                        <TextBlock />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!--  Column SizeFiles  -->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{DynamicResource TextBlockDataGridHeaderDateTime}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+
+                                        <!--  TextBlock date send letter  -->
+                                        <TextBlock />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!--  Column repeated send  -->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+
+                                        <!--  Button repeated send  -->
+                                        <Button />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+            </TabItem>
 
             <!--  Tab for settings  -->
-            <TabItem Header="{DynamicResource TabItemSettings}" />
+            <TabItem Header="{DynamicResource TabItemSettings}">
+
+                <!--  Main Grid tab settings  -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--  TabControl setting section  -->
+                    <TabControl TabStripPlacement="Left">
+
+                        <!--  Main Settings  -->
+                        <TabItem Header="{DynamicResource TabItemMainSettings}" />
+
+                    </TabControl>
+
+                    <!--  Button load default settings  -->
+                    <Button
+                        Grid.Row="1"
+                        HorizontalAlignment="Left"
+                        Content="{DynamicResource ButtonSettingsLoadDefault}"
+                        Style="{StaticResource ButtonSettings}" />
+
+                    <!--  Button save settings  -->
+                    <Button
+                        Grid.Row="1"
+                        HorizontalAlignment="Right"
+                        Content="{DynamicResource ButtonSettingsSave}"
+                        Style="{StaticResource ButtonSettings}" />
+                </Grid>
+
+            </TabItem>
 
             <!--  Tab for help  -->
-            <TabItem Header="{DynamicResource TabItemHelp}" />
+            <TabItem Header="{DynamicResource TabItemHelp}">
+                <TabControl>
+
+                    <TabItem Header="Как пользоваться?" />
+
+                    <TabItem Header="О программе" />
+
+                </TabControl>
+            </TabItem>
 
         </TabControl>
     </Grid>

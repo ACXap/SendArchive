@@ -1,7 +1,5 @@
-﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:SendArchive.Style">
+﻿<!--  ResourceDictionary style for TextBlock and TextBox  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--  Style for TextBlock Letter Header  -->
     <Style x:Key="TextLetterHeader" TargetType="{x:Type TextBlock}">
@@ -16,6 +14,13 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Margin" Value="2" />
+    </Style>
+
+    <!--  Style for TextBlock File Header  -->
+    <Style x:Key="TextFileList" TargetType="{x:Type TextBlock}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Black" />
     </Style>
 
 </ResourceDictionary>
