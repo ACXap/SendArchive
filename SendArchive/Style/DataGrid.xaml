@@ -1,6 +1,7 @@
 ﻿<!--  ResourceDictionary for elemen datagrid  -->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!--  ContextMenu for row  -->
     <ContextMenu x:Key="RowContextMenu" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}">
         <MenuItem
             Command="{Binding CommandOpenRepositoryFile}"
@@ -13,6 +14,7 @@
             Header="{DynamicResource ContectMenuOtemkDataGridFileDel}" />
     </ContextMenu>
 
+    <!--  Style for Cell  -->
     <Style x:Key="DataGridCell" TargetType="{x:Type DataGridCell}">
         <Setter Property="BorderThickness" Value="0" />
         <Style.Triggers>
@@ -35,6 +37,7 @@
         </Style.Triggers>
     </Style>
 
+    <!--  Style for row  -->
     <Style x:Key="DataGridRow" TargetType="{x:Type DataGridRow}">
         <Setter Property="ContextMenu" Value="{StaticResource RowContextMenu}" />
         <Style.Triggers>
@@ -43,4 +46,15 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <!--  Style for datagrid files collection  -->
+    <Style x:Key="DataGridFiles" TargetType="{x:Type DataGrid}">
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CellStyle" Value="{StaticResource DataGridCell}" />
+        <Setter Property="RowStyle" Value="{StaticResource DataGridRow}" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+    </Style>
+
 </ResourceDictionary>

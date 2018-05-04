@@ -20,4 +20,33 @@
         BasedOn="{StaticResource ButtonLetterHeader}"
         TargetType="{x:Type Button}" />
 
+
+    <!--  Style button del file from collection  -->
+    <Style x:Key="ButtonDelStyle" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Path
+                        Data="M55,0 L85,0 85,55 140,55 140,85 85,85 85,140 55,140 55,85 0,85 0,55 55,55 z"
+                        Fill="Red"
+                        RenderTransformOrigin="0.5,0.5"
+                        Stretch="Uniform">
+                        <Path.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="-45" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </Path.RenderTransform>
+                    </Path>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

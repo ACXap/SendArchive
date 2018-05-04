@@ -145,20 +145,14 @@
                     <!--  DataGrid list files  -->
                     <DataGrid
                         Grid.Row="1"
-                        AutoGenerateColumns="False"
-                        CanUserAddRows="False"
-                        CellStyle="{StaticResource DataGridCell}"
                         DataContext="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
-                        GridLinesVisibility="None"
-                        HeadersVisibility="Column"
-                        IsSynchronizedWithCurrentItem="True"
                         ItemsSource="{Binding CollectionFiles}"
-                        RowStyle="{StaticResource DataGridRow}">
+                        Style="{StaticResource DataGridFiles}">
 
                         <DataGrid.Columns>
 
                             <!--  Column NameFiles  -->
-                            <DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{DynamicResource TextBlockDataGridHeaderNameFiles}" />
@@ -166,17 +160,27 @@
                                 </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
+
+                                        <!--  Grid Icon and Name file  -->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="25" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
                                             <!--  Image icon file  -->
                                             <Image
+                                                Grid.Column="0"
                                                 Height="25"
                                                 Margin="0,0,5,0"
                                                 Source="{Binding Path, Converter={StaticResource ConverterPathFileToIconImage}}" />
 
                                             <!--  TextBlock name file  -->
-                                            <TextBlock Style="{StaticResource TextDataGridCollectionFiles}" Text="{Binding Name}" />
-                                        </StackPanel>
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Style="{StaticResource TextDataGridCollectionFiles}"
+                                                Text="{Binding Name}" />
+                                        </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -192,10 +196,7 @@
                                     <DataTemplate>
 
                                         <!--  TextBlock path files  -->
-                                        <TextBlock
-                                            Style="{StaticResource TextDataGridCollectionFiles}"
-                                            Text="{Binding Path}"
-                                            TextWrapping="Wrap" />
+                                        <TextBlock Style="{StaticResource TextDataGridCollectionFiles}" Text="{Binding Path}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -226,7 +227,11 @@
                                     <DataTemplate>
 
                                         <!--  Button del files  -->
-                                        <Button />
+                                        <Button
+                                            Command="{Binding CommandDelFile}"
+                                            CommandParameter="{Binding CollectionFiles/}"
+                                            DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext}"
+                                            Style="{StaticResource ButtonDelStyle}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

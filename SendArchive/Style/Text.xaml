@@ -34,6 +34,7 @@
     <!--  Style for TextBlock datagrid collection Files  -->
     <Style x:Key="TextDataGridCollectionFiles" TargetType="{x:Type TextBlock}">
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
 </ResourceDictionary>
