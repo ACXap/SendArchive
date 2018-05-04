@@ -23,4 +23,17 @@
         <Setter Property="FontWeight" Value="Black" />
     </Style>
 
+    <!--  Style for TextBlock File status  -->
+    <Style
+        x:Key="TextStatusFiles"
+        BasedOn="{StaticResource TextLetterHeader}"
+        TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="5,0,5,0" />
+    </Style>
+
+    <!--  Style for TextBlock datagrid collection Files  -->
+    <Style x:Key="TextDataGridCollectionFiles" TargetType="{x:Type TextBlock}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
 </ResourceDictionary>

@@ -9,6 +9,10 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
+    <Window.Resources>
+        <local:ConverterPathFileToIconImage x:Key="ConverterPathFileToIconImage" />
+        <local:ConverterSizeFileToKb x:Key="ConverterSizeFileToKb" />
+    </Window.Resources>
 
     <!--  Main Grid  -->
     <Grid>
@@ -107,7 +111,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="50" />
+                        <RowDefinition Height="20" />
                     </Grid.RowDefinitions>
 
                     <!--  Grid Files Header  -->
@@ -123,10 +127,16 @@
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
 
                             <!--  Button add files  -->
-                            <Button Content="{DynamicResource ButtonFileAddFile}" Style="{StaticResource ButtonFile}" />
+                            <Button
+                                Command="{Binding CommandAddFiles}"
+                                Content="{DynamicResource ButtonFileAddFile}"
+                                Style="{StaticResource ButtonFile}" />
 
                             <!--  Button clear file list  -->
-                            <Button Content="{DynamicResource ButtonFileClearList}" Style="{StaticResource ButtonFile}" />
+                            <Button
+                                Command="{Binding CommandClearCollectionFiles}"
+                                Content="{DynamicResource ButtonFileClearList}"
+                                Style="{StaticResource ButtonFile}" />
                         </StackPanel>
 
                     </Grid>
@@ -135,7 +145,10 @@
                     <DataGrid
                         Grid.Row="1"
                         AutoGenerateColumns="False"
-                        CanUserAddRows="False">
+                        CanUserAddRows="False"
+                        GridLinesVisibility="None"
+                        HeadersVisibility="Column"
+                        ItemsSource="{Binding CollectionFiles}">
                         <DataGrid.Columns>
 
                             <!--  Column NameFiles  -->
@@ -150,27 +163,33 @@
                                         <StackPanel Orientation="Horizontal">
 
                                             <!--  Image icon file  -->
-                                            <Image />
+                                            <Image
+                                                Height="25"
+                                                Margin="0,0,5,0"
+                                                Source="{Binding Path, Converter={StaticResource ConverterPathFileToIconImage}}" />
 
                                             <!--  TextBlock name file  -->
-                                            <TextBlock />
+                                            <TextBlock Style="{StaticResource TextDataGridCollectionFiles}" Text="{Binding Name}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
                             <!--  Column PathFiles  -->
-                            <DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{DynamicResource TextBlockDataGridHeaderPathFiles}" />
+                                        <TextBlock Style="{StaticResource TextDataGridCollectionFiles}" Text="{DynamicResource TextBlockDataGridHeaderPathFiles}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
 
                                         <!--  TextBlock path files  -->
-                                        <TextBlock />
+                                        <TextBlock
+                                            Style="{StaticResource TextDataGridCollectionFiles}"
+                                            Text="{Binding Path}"
+                                            TextWrapping="Wrap" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -186,7 +205,11 @@
                                     <DataTemplate>
 
                                         <!--  TextBlock size files  -->
-                                        <TextBlock />
+                                        <TextBlock
+                                            Margin="0,0,10,0"
+                                            HorizontalAlignment="Right"
+                                            Style="{StaticResource TextDataGridCollectionFiles}"
+                                            Text="{Binding Size, Converter={StaticResource ConverterSizeFileToKb}, StringFormat=\{0:# ### ###\}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -204,6 +227,28 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
+
+                    <Grid Grid.Row="2">
+                        <StackPanel
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource TextStatusFiles}" Text="{DynamicResource TextBlockDataGridStatusCountFiles}" />
+                            <TextBlock Style="{StaticResource TextLetterHeader}" Text="{Binding CollectionFiles.Count, FallbackValue=0}" />
+                        </StackPanel>
+                        <StackPanel
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource TextStatusFiles}" Text="{DynamicResource TextBlockDataGridStatusTotalSize}" />
+                            <TextBlock Style="{StaticResource TextLetterHeader}" Text="{Binding TotalSize, FallbackValue=0, StringFormat=\{0:N\}}" />
+                            <TextBlock
+                                Margin="5,0,0,0"
+                                Style="{StaticResource TextLetterHeader}"
+                                Text="{DynamicResource TextBlockDataGridSizeMbyte}" />
+                        </StackPanel>
+                    </Grid>
+
                 </Grid>
             </TabItem>
 

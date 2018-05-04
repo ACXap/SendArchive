@@ -29,7 +29,10 @@
     <!--  File list DataGrid  -->
     <sys:String x:Key="TextBlockDataGridHeaderNameFiles">Имя файла</sys:String>
     <sys:String x:Key="TextBlockDataGridHeaderPathFiles">Путь файла</sys:String>
-    <sys:String x:Key="TextBlockDataGridHeaderSizeFiles">Размер файла</sys:String>
+    <sys:String x:Key="TextBlockDataGridHeaderSizeFiles">Размер файла (КБ)</sys:String>
+    <sys:String x:Key="TextBlockDataGridStatusCountFiles">Всего файлов:</sys:String>
+    <sys:String x:Key="TextBlockDataGridStatusTotalSize">Общий размер:</sys:String>
+    <sys:String x:Key="TextBlockDataGridSizeMbyte">МБ</sys:String>
 
     <!--  Result list  -->
     <sys:String x:Key="TextBlockResultList">Результаты</sys:String>
