@@ -103,6 +103,36 @@ namespace SendArchive
             }
         }
 
+        // Command remove file from collection
+        private RelayCommand _commandDelFile;
+        public RelayCommand CommandDelFile
+        {
+            get
+            {
+                return _commandDelFile ?? (_commandDelFile = new RelayCommand(o =>
+                {
+                    if(o is FileSpecification)
+                    {
+                        _collectionFiles.Remove(o as FileSpecification);
+                        TotalSize = _collectionFiles.Sum(p => p.Size);
+                    }
+                }));
+            }
+        }
+
+        // Command open folder file
+        private RelayCommand _commandOpenRepositoryFile;
+        public RelayCommand CommandOpenRepositoryFile
+        {
+            get
+            {
+                return _commandOpenRepositoryFile ?? (_commandOpenRepositoryFile = new RelayCommand(o =>
+                  {
+                      _fileService.OpenRepositoryFile(o as string);
+                  }));
+            }
+        }
+
         #endregion Command
 
         #region Public Constructor

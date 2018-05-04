@@ -1,0 +1,12 @@
+﻿<!--  ResourceDictionary for colors  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  Color for row datagrid when mouse is over  -->
+    <Color x:Key="DataGridIsMouseOverRow">#73b5d9</Color>
+    <SolidColorBrush x:Key="DataGridIsMouseOverRowBrush" Color="{StaticResource DataGridIsMouseOverRow}" />
+
+    <!--  Color for row datagrid when selected  -->
+    <Color x:Key="DataGridIsSelectedRow">#2c77a0</Color>
+    <SolidColorBrush x:Key="DataGridIsSelectedRowBrush" Color="{StaticResource DataGridIsSelectedRow}" />
+
+</ResourceDictionary>

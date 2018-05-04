@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SendArchive"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Name="MW"
     Title="{DynamicResource Title}"
     Width="800"
     Height="450"
@@ -146,9 +147,14 @@
                         Grid.Row="1"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
+                        CellStyle="{StaticResource DataGridCell}"
+                        DataContext="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
                         GridLinesVisibility="None"
                         HeadersVisibility="Column"
-                        ItemsSource="{Binding CollectionFiles}">
+                        IsSynchronizedWithCurrentItem="True"
+                        ItemsSource="{Binding CollectionFiles}"
+                        RowStyle="{StaticResource DataGridRow}">
+
                         <DataGrid.Columns>
 
                             <!--  Column NameFiles  -->
@@ -228,7 +234,10 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
+                    <!--  DataGrid status collection files  -->
                     <Grid Grid.Row="2">
+
+                        <!--  Count files in collection  -->
                         <StackPanel
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
@@ -236,6 +245,8 @@
                             <TextBlock Style="{StaticResource TextStatusFiles}" Text="{DynamicResource TextBlockDataGridStatusCountFiles}" />
                             <TextBlock Style="{StaticResource TextLetterHeader}" Text="{Binding CollectionFiles.Count, FallbackValue=0}" />
                         </StackPanel>
+
+                        <!--  Total size files in collection  -->
                         <StackPanel
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"

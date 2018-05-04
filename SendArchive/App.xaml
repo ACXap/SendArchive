@@ -9,6 +9,8 @@
                 <ResourceDictionary Source="Language/RuDefault.xaml" />
                 <ResourceDictionary Source="Style/Text.xaml" />
                 <ResourceDictionary Source="Style/Button.xaml" />
+                <ResourceDictionary Source="Style/Colors.xaml" />
+                <ResourceDictionary Source="Style/DataGrid.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
