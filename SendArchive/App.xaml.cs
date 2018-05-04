@@ -1,17 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using SendArchive.Settings;
 using System.Windows;
 
 namespace SendArchive
 {
-    /// <summary>
-    /// Логика взаимодействия для App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        private readonly ISettingsService _settingsService;
+
+        private App()
+        {
+            _settingsService = new SettingsService();
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            var vm = new MainWindowViewModel(_settingsService);
+            MainWindow = new MainWindow
+            {
+                DataContext = vm
+            };
+            MainWindow.Show();
+        }
     }
 }
