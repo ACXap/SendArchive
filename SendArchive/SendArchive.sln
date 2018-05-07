@@ -7,11 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendArchive", "SendArchive.
 	ProjectSection(ProjectDependencies) = postProject
 		{35173383-A105-41D8-AFA5-4C0D28C5CCDD} = {35173383-A105-41D8-AFA5-4C0D28C5CCDD}
 		{FF2DC49C-7F31-4EF3-A0EF-895043082F69} = {FF2DC49C-7F31-4EF3-A0EF-895043082F69}
+		{AFC811C2-00EB-4CFC-BC0D-AAB9E3635511} = {AFC811C2-00EB-4CFC-BC0D-AAB9E3635511}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendArchive.Settings", "..\SendArchive.Settings\SendArchive.Settings.csproj", "{35173383-A105-41D8-AFA5-4C0D28C5CCDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendArchive.Files", "..\SendArchive.Files\SendArchive.Files.csproj", "{FF2DC49C-7F31-4EF3-A0EF-895043082F69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendArchive.Email", "..\SendArchive.Email\SendArchive.Email.csproj", "{AFC811C2-00EB-4CFC-BC0D-AAB9E3635511}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +34,10 @@ Global
 		{FF2DC49C-7F31-4EF3-A0EF-895043082F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF2DC49C-7F31-4EF3-A0EF-895043082F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF2DC49C-7F31-4EF3-A0EF-895043082F69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFC811C2-00EB-4CFC-BC0D-AAB9E3635511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFC811C2-00EB-4CFC-BC0D-AAB9E3635511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFC811C2-00EB-4CFC-BC0D-AAB9E3635511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFC811C2-00EB-4CFC-BC0D-AAB9E3635511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

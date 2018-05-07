@@ -39,6 +39,9 @@
     <!--  Result list  -->
     <sys:String x:Key="TextBlockResultList">Результаты</sys:String>
     <sys:String x:Key="ButtonResultClearList">Очистить список</sys:String>
+    <sys:String x:Key="TextBlockTextMessage">Текст</sys:String>
+    <sys:String x:Key="TextBlockFileMessage">Файлы</sys:String>
+
     <!--  Result list DataGrid  -->
     <sys:String x:Key="TextBlockDataGridHeaderLetterSubject">Письмо</sys:String>
     <sys:String x:Key="TextBlockDataGridHeaderResult">Результат</sys:String>

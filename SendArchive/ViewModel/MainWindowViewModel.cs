@@ -1,7 +1,9 @@
 ﻿using SendArchive.Files;
 using SendArchive.Settings;
+using SendArchive.Email;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System;
 
 namespace SendArchive
 {
@@ -15,14 +17,36 @@ namespace SendArchive
         // Service for working with settings
         private ISettingsService _settingsService;
 
-        // Service for working wih files
+        // Service for working with files
         private IFileService _fileService;
+
+        // Service for working with email
+        private IEmailService _emailService;
 
         // Field collection files
         private ObservableCollection<FileSpecification> _collectionFiles;
 
+        // Field collection messages
+        private ObservableCollection<Message> _collectionMessage;
+
         // Field total size files
         private double _totalSize = 0;
+
+        // Field tab selected
+        private TabMailWindow _tabMailWindow;
+
+        // Field addressee
+        private string _addresseeMessage;
+
+        // Field subject
+        private string _subjectMessage;
+
+        // Field body message
+        private string _textMessage;
+
+        // Field signature message
+        private string _signatureMessage;
+
         #endregion Private Field
 
         #region Public Properties
@@ -41,6 +65,20 @@ namespace SendArchive
             }
         }
 
+        // Collection message
+        public ObservableCollection<Message> CollectionMessages
+        {
+            get => _collectionMessage;
+            set
+            {
+                if (_collectionMessage != value)
+                {
+                    _collectionMessage = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         // Total size files
         public double TotalSize
         {
@@ -50,6 +88,76 @@ namespace SendArchive
                 if (_totalSize != value)
                 {
                     _totalSize = (value / 1024) / 1024;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        // Tab selected
+        public TabMailWindow TabMailWindow
+        {
+            get => _tabMailWindow;
+            set
+            {
+                if (_tabMailWindow != value)
+                {
+                    _tabMailWindow = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        // Addressee
+        public string AddresseeMessage
+        {
+            get => _addresseeMessage;
+            set
+            {
+                if (_addresseeMessage != value)
+                {
+                    _addresseeMessage = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        // Subject
+        public string SubjectMessage
+        {
+            get => _subjectMessage;
+            set
+            {
+                if (_subjectMessage != value)
+                {
+                    _subjectMessage = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        // Body message
+        public string TextMessage
+        {
+            get => _textMessage;
+            set
+            {
+                if (_textMessage != value)
+                {
+                    _textMessage = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        // Signature message
+        public string SignatureMessage
+        {
+            get => _signatureMessage;
+            set
+            {
+                if (_signatureMessage != value)
+                {
+                    _signatureMessage = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -111,7 +219,7 @@ namespace SendArchive
             {
                 return _commandDelFile ?? (_commandDelFile = new RelayCommand(o =>
                 {
-                    if(o is FileSpecification)
+                    if (o is FileSpecification)
                     {
                         _collectionFiles.Remove(o as FileSpecification);
                         TotalSize = _collectionFiles.Sum(p => p.Size);
@@ -133,16 +241,82 @@ namespace SendArchive
             }
         }
 
+        // Command send message
+        private RelayCommand _commandSendMessage;
+        public RelayCommand CommandSendMessage
+        {
+            get
+            {
+                return _commandSendMessage ?? (_commandSendMessage = new RelayCommand(o =>
+                {
+                    TabMailWindow = TabMailWindow.TabItemResult;
+                    CreatesMessages();
+                    //SendMessages();
+                }));
+            }
+        }
+
         #endregion Command
 
         #region Public Constructor
 
-        public MainWindowViewModel(ISettingsService settingsService, IFileService fileService)
+        public MainWindowViewModel(ISettingsService settingsService, IFileService fileService, IEmailService emailService)
         {
             _settingsService = settingsService;
             _fileService = fileService;
+            _emailService = emailService;
         }
 
         #endregion Public Constrctor
+
+        private void CreatesMessages()
+        {
+            if (_collectionFiles == null || _collectionFiles.Count == 0)
+            {
+                return;
+            }
+
+            int indexMessage = 0;
+            string subjectMessageNotFirstMessage = "письмо из";
+            string[] addressee = GetAddressee(_addresseeMessage);
+
+            if (addressee == null || addressee.Length == 0)
+            {
+                return;
+            }
+
+            CollectionMessages = new ObservableCollection<Message>();
+            foreach (var file in _collectionFiles)
+            {
+                if (indexMessage == 0)
+                {
+                    _emailService.CreateMessage(message =>
+                    {
+                        _collectionMessage.Add(message);
+                    }, addressee, _subjectMessage, _textMessage, _signatureMessage, new string[] { file.Path });
+                }
+                else
+                {
+                    _emailService.CreateMessage(message =>
+                    {
+                        _collectionMessage.Add(message);
+                    }, addressee, $"{indexMessage + 1} {subjectMessageNotFirstMessage} {_collectionFiles.Count}", string.Empty, string.Empty, new string[] { file.Path });
+                }
+
+                indexMessage++;
+            }
+        }
+
+        private string[] GetAddressee(string addresseeMessage)
+        {
+            if (string.IsNullOrEmpty(addresseeMessage))
+            {
+                return null;
+            }
+            else
+            {
+                return addresseeMessage.Replace(" ", "").Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
     }
 }

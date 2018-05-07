@@ -13,13 +13,14 @@
     <Window.Resources>
         <local:ConverterPathFileToIconImage x:Key="ConverterPathFileToIconImage" />
         <local:ConverterSizeFileToKb x:Key="ConverterSizeFileToKb" />
+        <local:ConverterTabEnumToTabIndex x:Key="ConverterTabEnumToTabIndex" />
     </Window.Resources>
 
     <!--  Main Grid  -->
     <Grid>
 
         <!--  Main TabControl  -->
-        <TabControl>
+        <TabControl SelectedIndex="{Binding TabMailWindow, Converter={StaticResource ConverterTabEnumToTabIndex}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
             <!--  Tab for writing a letter  -->
             <TabItem Header="{DynamicResource TabItemLetter}">
@@ -42,6 +43,7 @@
                         <!--  Button send email  -->
                         <Button
                             Grid.Column="0"
+                            Command="{Binding CommandSendMessage}"
                             Content="{DynamicResource ButtonLetterSend}"
                             Style="{StaticResource ButtonLetterHeader}" />
 
@@ -73,19 +75,24 @@
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Style="{StaticResource TextBoxLetterHeader}" />
+                                Style="{StaticResource TextBoxLetterHeader}"
+                                Text="{Binding AddresseeMessage, UpdateSourceTrigger=PropertyChanged}" />
 
                             <!--  TextBox for subject email  -->
                             <TextBox
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Style="{StaticResource TextBoxLetterHeader}" />
+                                Style="{StaticResource TextBoxLetterHeader}"
+                                Text="{Binding SubjectMessage, UpdateSourceTrigger=PropertyChanged}" />
 
                         </Grid>
                     </Grid>
 
                     <!--  TextBox Letter  -->
-                    <TextBox Grid.Row="1" Margin="2" />
+                    <TextBox
+                        Grid.Row="1"
+                        Margin="2"
+                        Text="{Binding TextMessage, UpdateSourceTrigger=PropertyChanged}" />
 
                     <!--  Grid for signatures of the letter  -->
                     <Grid Grid.Row="2" Margin="2">
@@ -97,7 +104,7 @@
                         <TextBlock Text="{DynamicResource TextBlockLeterSignature}" />
 
                         <!--  TextBox for signatures letter  -->
-                        <TextBox Grid.Row="1" />
+                        <TextBox Grid.Row="1" Text="{Binding SignatureMessage, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
 
@@ -298,8 +305,8 @@
                     <!--  DataGrid list files  -->
                     <DataGrid
                         Grid.Row="1"
-                        AutoGenerateColumns="False"
-                        CanUserAddRows="False">
+                        ItemsSource="{Binding CollectionMessages}"
+                        Style="{StaticResource DataGridFiles}">
                         <DataGrid.Columns>
 
                             <!--  Column letter  -->
@@ -312,12 +319,83 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <!--  TextBlock letter subject  -->
-                                        <TextBlock />
+                                        <TextBlock Text="{Binding Subject}">
+
+                                            <!--  Data message  -->
+                                            <TextBlock.ToolTip>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+
+                                                    <!--  Addressee messsage  -->
+                                                    <TextBlock
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Style="{StaticResource TextLetterHeader}"
+                                                        Text="{DynamicResource TextBlockLetterWhom}" />
+                                                    <ItemsControl
+                                                        Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        ItemsSource="{Binding Addressee}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <ItemContainerTemplate>
+                                                                <TextBlock Margin="5,0,0,0" Text="{Binding}" />
+                                                            </ItemContainerTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+
+                                                    <!--  Text message  -->
+                                                    <TextBlock
+                                                        Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Style="{StaticResource TextLetterHeader}"
+                                                        Text="{DynamicResource TextBlockTextMessage}" />
+                                                    <TextBlock
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Text="{Binding Body}" />
+
+                                                    <!--  Files in a  message  -->
+                                                    <TextBlock
+                                                        Grid.Row="2"
+                                                        Grid.Column="0"
+                                                        Style="{StaticResource TextLetterHeader}"
+                                                        Text="{DynamicResource TextBlockFileMessage}" />
+                                                    <ItemsControl
+                                                        Grid.Row="2"
+                                                        Grid.Column="1"
+                                                        ItemsSource="{Binding Attachments}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <ItemContainerTemplate>
+                                                                <TextBlock Margin="5,0,0,0" Text="{Binding}" />
+                                                            </ItemContainerTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </Grid>
+                                            </TextBlock.ToolTip>
+                                        </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--  Column PathFiles  -->
+                            <!--  Column result send letter  -->
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
@@ -328,12 +406,12 @@
                                     <DataTemplate>
 
                                         <!--  TextBlock result send letter  -->
-                                        <TextBlock />
+                                        <TextBlock Text="{Binding IsMessageSend}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--  Column SizeFiles  -->
+                            <!--  Column date send letter  -->
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
@@ -344,7 +422,7 @@
                                     <DataTemplate>
 
                                         <!--  TextBlock date send letter  -->
-                                        <TextBlock />
+                                        <TextBlock Text="{Binding DateSend}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
