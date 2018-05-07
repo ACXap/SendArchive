@@ -46,6 +46,7 @@ namespace SendArchive.Settings
                 catch (Exception ex)
                 {
                     //TODO if ever there is a logging
+                    throw new Exception("Error");
                 }
 
             }
@@ -77,6 +78,7 @@ namespace SendArchive.Settings
             catch (Exception ex)
             {
                 //TODO if ever there is a logging
+                throw new Exception("Error");
             }
         }
        

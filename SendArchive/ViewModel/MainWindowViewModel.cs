@@ -247,12 +247,26 @@ namespace SendArchive
         {
             get
             {
-                return _commandSendMessage ?? (_commandSendMessage = new RelayCommand(o =>
+                return _commandSendMessage ?? (_commandSendMessage = new RelayCommand(async o =>
                 {
                     TabMailWindow = TabMailWindow.TabItemResult;
                     CreatesMessages();
-                    //SendMessages();
-                }));
+                    await SendMessagesAsync();
+                }, o => CollectionFiles != null && CollectionFiles.Count != 0 && !string.IsNullOrEmpty(_addresseeMessage)));
+            }
+        }
+
+        // Command for clear coolection message
+        private RelayCommand _commandClearCollectionMessage;
+        public RelayCommand CommandClearCollectionMessage
+        {
+            get
+            {
+                return _commandClearCollectionMessage ?? (_commandClearCollectionMessage = new RelayCommand(o =>
+                {
+                    _collectionMessage.Clear();
+                    _collectionMessage = null;
+                }, o => _collectionMessage != null && _collectionMessage.Count > 0));
             }
         }
 
@@ -292,6 +306,13 @@ namespace SendArchive
                 {
                     _emailService.CreateMessage(message =>
                     {
+                        //_collectionMessage.Add(new Message()
+                        //{
+                        //    Addressee = message.Addressee,
+                        //    Attachments = message.Attachments,
+                        //    Body = message.Body,
+                        //    Subject = message.Subject
+                        //});
                         _collectionMessage.Add(message);
                     }, addressee, _subjectMessage, _textMessage, _signatureMessage, new string[] { file.Path });
                 }
@@ -299,12 +320,32 @@ namespace SendArchive
                 {
                     _emailService.CreateMessage(message =>
                     {
+                        //_collectionMessage.Add(new Message()
+                        //{
+                        //    Addressee = message.Addressee,
+                        //    Attachments = message.Attachments,
+                        //    Body = message.Body,
+                        //    Subject = message.Subject
+                        //});
                         _collectionMessage.Add(message);
                     }, addressee, $"{indexMessage + 1} {subjectMessageNotFirstMessage} {_collectionFiles.Count}", string.Empty, string.Empty, new string[] { file.Path });
                 }
 
                 indexMessage++;
             }
+        }
+
+        private async System.Threading.Tasks.Task SendMessagesAsync()
+        {
+            if (_collectionMessage == null || _collectionMessage.Count == 0)
+            {
+                return;
+            }
+            foreach(var msg in _collectionMessage)
+            {
+                await _emailService.SendEmailAsync(msg);
+            }
+           
         }
 
         private string[] GetAddressee(string addresseeMessage)

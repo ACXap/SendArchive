@@ -33,6 +33,11 @@ namespace SendArchive.Email
         public bool IsMessageSend { get; set; }
 
         /// <summary>
+        /// Enumerations status send message
+        /// </summary>
+        public StatusMessage StatusMessage { get; set; }
+
+        /// <summary>
         /// Date send message
         /// </summary>
         public DateTime DateSend { get; set; }

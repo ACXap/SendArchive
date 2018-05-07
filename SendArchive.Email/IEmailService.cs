@@ -11,7 +11,7 @@ namespace SendArchive.Email
         /// Method send message
         /// </summary>
         /// <param name="message">Messgae for send</param>
-        void SendEmail(Message message);
+        System.Threading.Tasks.Task SendEmailAsync(Message message);
 
         /// <summary>
         /// Method for create message

@@ -38,9 +38,16 @@
 
     <!--  Result list  -->
     <sys:String x:Key="TextBlockResultList">Результаты</sys:String>
+    <sys:String x:Key="ButtonResultCancelSend">Отменить отправку</sys:String>
     <sys:String x:Key="ButtonResultClearList">Очистить список</sys:String>
     <sys:String x:Key="TextBlockTextMessage">Текст</sys:String>
     <sys:String x:Key="TextBlockFileMessage">Файлы</sys:String>
+
+    <sys:String x:Key="TextBlockResultReadyToSend">Готово к отправке</sys:String>
+    <sys:String x:Key="TextBlockResultSending">Отправка...</sys:String>
+    <sys:String x:Key="TextBlockResultSent">Отправлено</sys:String>
+    <sys:String x:Key="TextBlockResultFail">Сбой</sys:String>
+    <sys:String x:Key="TextBlockResultCancel">Отменено</sys:String>
 
     <!--  Result list DataGrid  -->
     <sys:String x:Key="TextBlockDataGridHeaderLetterSubject">Письмо</sys:String>
