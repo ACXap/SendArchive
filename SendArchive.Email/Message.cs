@@ -20,7 +20,7 @@ namespace SendArchive.Email
         /// <summary>
         /// Array of recipient addresses
         /// </summary>
-        public string[] Addressee { get; set; }
+        public string[] Recipients { get; set; }
         
         /// <summary>
         /// Array file of attachments

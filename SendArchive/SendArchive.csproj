@@ -63,6 +63,8 @@
     <Compile Include="Enumertions\TabMailWindow.cs" />
     <Compile Include="ViewModel\Base\BaseViewModel.cs" />
     <Compile Include="ViewModel\Base\RelayCommand.cs" />
+    <Compile Include="ViewModel\Data\Message.cs" />
+    <Compile Include="ViewModel\Data\ResultSending.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Page Include="Language\RuDefault.xaml">
       <SubType>Designer</SubType>

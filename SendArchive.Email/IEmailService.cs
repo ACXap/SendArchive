@@ -17,12 +17,12 @@ namespace SendArchive.Email
         /// Method for create message
         /// </summary>
         /// <param name="callback">Delegate for return message</param>
-        /// <param name="addressee">Arrey addressee</param>
+        /// <param name="recipients">Arrey addressee recipients</param>
         /// <param name="subject">Subject message</param>
         /// <param name="textMessage">Text message</param>
         /// <param name="signature">Signature message</param>
         /// <param name="attachments">Arrey path file for attachments</param>
 
-        void CreateMessage(Action<Message> callback, string[] addressee, string subject, string textMessage, string signature, string[] attachments);
+        void CreateMessage(Action<Message> callback, string[] recipients, string subject, string textMessage, string signature, string[] attachments);
     }
 }

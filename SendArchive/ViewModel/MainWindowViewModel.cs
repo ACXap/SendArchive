@@ -247,11 +247,11 @@ namespace SendArchive
         {
             get
             {
-                return _commandSendMessage ?? (_commandSendMessage = new RelayCommand(async o =>
+                return _commandSendMessage ?? (_commandSendMessage = new RelayCommand(o =>
                 {
                     TabMailWindow = TabMailWindow.TabItemResult;
-                    CreatesMessages();
-                    await SendMessagesAsync();
+                    //CreatesMessages();
+                    //await SendMessagesAsync();
                 }, o => CollectionFiles != null && CollectionFiles.Count != 0 && !string.IsNullOrEmpty(_addresseeMessage)));
             }
         }
@@ -285,66 +285,67 @@ namespace SendArchive
 
         private void CreatesMessages()
         {
-            if (_collectionFiles == null || _collectionFiles.Count == 0)
-            {
-                return;
-            }
+            
+            //if (_collectionFiles == null || _collectionFiles.Count == 0)
+            //{
+            //    return;
+            //}
 
-            int indexMessage = 0;
-            string subjectMessageNotFirstMessage = "письмо из";
-            string[] addressee = GetAddressee(_addresseeMessage);
+            //int indexMessage = 0;
+            //string subjectMessageNotFirstMessage = "письмо из";
+            //string[] addressee = GetAddressee(_addresseeMessage);
 
-            if (addressee == null || addressee.Length == 0)
-            {
-                return;
-            }
+            //if (addressee == null || addressee.Length == 0)
+            //{
+            //    return;
+            //}
 
-            CollectionMessages = new ObservableCollection<Message>();
-            foreach (var file in _collectionFiles)
-            {
-                if (indexMessage == 0)
-                {
-                    _emailService.CreateMessage(message =>
-                    {
-                        //_collectionMessage.Add(new Message()
-                        //{
-                        //    Addressee = message.Addressee,
-                        //    Attachments = message.Attachments,
-                        //    Body = message.Body,
-                        //    Subject = message.Subject
-                        //});
-                        _collectionMessage.Add(message);
-                    }, addressee, _subjectMessage, _textMessage, _signatureMessage, new string[] { file.Path });
-                }
-                else
-                {
-                    _emailService.CreateMessage(message =>
-                    {
-                        //_collectionMessage.Add(new Message()
-                        //{
-                        //    Addressee = message.Addressee,
-                        //    Attachments = message.Attachments,
-                        //    Body = message.Body,
-                        //    Subject = message.Subject
-                        //});
-                        _collectionMessage.Add(message);
-                    }, addressee, $"{indexMessage + 1} {subjectMessageNotFirstMessage} {_collectionFiles.Count}", string.Empty, string.Empty, new string[] { file.Path });
-                }
+            //CollectionMessages = new ObservableCollection<Message>();
+            //foreach (var file in _collectionFiles)
+            //{
+            //    if (indexMessage == 0)
+            //    {
+            //        _emailService.CreateMessage(message =>
+            //        {
+            //            //_collectionMessage.Add(new Message()
+            //            //{
+            //            //    Addressee = message.Addressee,
+            //            //    Attachments = message.Attachments,
+            //            //    Body = message.Body,
+            //            //    Subject = message.Subject
+            //            //});
+            //            _collectionMessage.Add(message);
+            //        }, addressee, _subjectMessage, _textMessage, _signatureMessage, new string[] { file.Path });
+            //    }
+            //    else
+            //    {
+            //        _emailService.CreateMessage(message =>
+            //        {
+            //            //_collectionMessage.Add(new Message()
+            //            //{
+            //            //    Addressee = message.Addressee,
+            //            //    Attachments = message.Attachments,
+            //            //    Body = message.Body,
+            //            //    Subject = message.Subject
+            //            //});
+            //            _collectionMessage.Add(message);
+            //        }, addressee, $"{indexMessage + 1} {subjectMessageNotFirstMessage} {_collectionFiles.Count}", string.Empty, string.Empty, new string[] { file.Path });
+            //    }
 
-                indexMessage++;
-            }
+            //    indexMessage++;
+            //}
         }
 
         private async System.Threading.Tasks.Task SendMessagesAsync()
         {
-            if (_collectionMessage == null || _collectionMessage.Count == 0)
-            {
-                return;
-            }
-            foreach(var msg in _collectionMessage)
-            {
-                await _emailService.SendEmailAsync(msg);
-            }
+            //if (_collectionMessage == null || _collectionMessage.Count == 0)
+            //{
+            //    return;
+            //}
+            //foreach(var msg in _collectionMessage)
+            //{
+            //    await _emailService.SendEmailAsync(msg);
+            //}
            
         }
 

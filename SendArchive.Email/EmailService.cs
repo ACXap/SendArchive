@@ -8,14 +8,14 @@ namespace SendArchive.Email
     {
         private ExchangeService service;
 
-        public void CreateMessage(Action<Message> callback, string[] addressee, string subject, string textMessage, string signature, string[] attachments)
+        public void CreateMessage(Action<Message> callback, string[] recipients, string subject, string textMessage, string signature, string[] attachments)
         {
             Message message = new Message
             {
                 Body = textMessage + Environment.NewLine + signature,
                 Subject = subject,
                 Attachments = attachments,
-                Addressee = addressee
+                Recipients = recipients
             };
             callback(message);
         }
@@ -27,7 +27,7 @@ namespace SendArchive.Email
             {
                 EmailMessage email = new EmailMessage(service);
 
-                email.ToRecipients.AddRange(message.Addressee);
+                email.ToRecipients.AddRange(message.Recipients);
                 email.Subject = message.Subject;
                 email.Body = message.Body;
                 email.IsDeliveryReceiptRequested = true;
