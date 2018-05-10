@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SendArchive.Email
+﻿namespace SendArchive.Email
 {
     /// <summary>
     /// Interface for description service email
@@ -11,18 +9,7 @@ namespace SendArchive.Email
         /// Method send message
         /// </summary>
         /// <param name="message">Messgae for send</param>
-        System.Threading.Tasks.Task SendEmailAsync(Message message);
-
-        /// <summary>
-        /// Method for create message
-        /// </summary>
-        /// <param name="callback">Delegate for return message</param>
-        /// <param name="recipients">Arrey addressee recipients</param>
-        /// <param name="subject">Subject message</param>
-        /// <param name="textMessage">Text message</param>
-        /// <param name="signature">Signature message</param>
-        /// <param name="attachments">Arrey path file for attachments</param>
-
-        void CreateMessage(Action<Message> callback, string[] recipients, string subject, string textMessage, string signature, string[] attachments);
+        /// <returns>Returns the result of sending</returns>
+        System.Threading.Tasks.Task<Result> SendEmailAsync(Message message);
     }
 }

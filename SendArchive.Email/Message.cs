@@ -26,25 +26,16 @@ namespace SendArchive.Email
         /// Array file of attachments
         /// </summary>
         public string[] Attachments { get; set; }
-       
-        /// <summary>
-        /// Is message send
-        /// </summary>
-        public bool IsMessageSend { get; set; }
 
         /// <summary>
-        /// Enumerations status send message
+        /// Request Delivery Report
         /// </summary>
-        public StatusMessage StatusMessage { get; set; }
+        public bool CanRequestDeliveryReport { get; set; }
 
         /// <summary>
-        /// Date send message
+        /// Request reading Report
         /// </summary>
-        public DateTime DateSend { get; set; }
-       
-        /// <summary>
-        /// Why not send message if IsMessageSend is false
-        /// </summary>
-        public string WhyNotSend { get; set; }
+        public bool CanRequestReadReport { get; set; }
+
     }
 }

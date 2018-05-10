@@ -33,7 +33,7 @@
         /// <summary>
         /// Paths files attacments 
         /// </summary>
-        public string[] Attacments { get; set; }
+        public string[] Attachments { get; set; }
 
         /// <summary>
         /// Request Delivery Report

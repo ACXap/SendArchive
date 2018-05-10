@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SendArchive.ViewModel.Data
+namespace SendArchive
 {
     public class ResultSending : BaseViewModel
     {

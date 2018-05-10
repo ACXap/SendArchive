@@ -8,45 +8,37 @@ namespace SendArchive.Email
     {
         private ExchangeService service;
 
-        public void CreateMessage(Action<Message> callback, string[] recipients, string subject, string textMessage, string signature, string[] attachments)
-        {
-            Message message = new Message
-            {
-                Body = textMessage + Environment.NewLine + signature,
-                Subject = subject,
-                Attachments = attachments,
-                Recipients = recipients
-            };
-            callback(message);
-        }
 
-        public async System.Threading.Tasks.Task SendEmailAsync(Message message)
+        public async System.Threading.Tasks.Task<Result> SendEmailAsync(Message message)
         {
-            message.StatusMessage = StatusMessage.Sending;
+            Result result = new Result();
+
             try
             {
                 EmailMessage email = new EmailMessage(service);
 
                 email.ToRecipients.AddRange(message.Recipients);
                 email.Subject = message.Subject;
+                foreach(var path in message.Attachments)
+                {
+                    email.Attachments.AddFileAttachment(path);
+                }
                 email.Body = message.Body;
-                email.IsDeliveryReceiptRequested = true;
-                email.IsReadReceiptRequested = true;
+                email.IsDeliveryReceiptRequested = message.CanRequestDeliveryReport;
+                email.IsReadReceiptRequested = message.CanRequestReadReport;
+                await System.Threading.Tasks.Task.Delay(4000);
                 await email.SendAndSaveCopy();
-                
-
-                message.DateSend = DateTime.Now;
-                message.StatusMessage = StatusMessage.Sent;
+                result.DateTimeSending = DateTime.Now;
+                result.IsSent = true;
             }
             catch (Exception ex)
             {
-                message.DateSend = DateTime.Now;
-                message.StatusMessage = StatusMessage.Fail;
-                message.WhyNotSend = ex.Message;
-               // throw new Exception("Error");
+                result.IsSent = false;
+                result.DateTimeSending = DateTime.Now;
+                result.WhyNotSend = ex.Message;
             }
-            
-            
+
+            return result;
         }
 
         public EmailService()

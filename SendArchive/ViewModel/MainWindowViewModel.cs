@@ -1,9 +1,10 @@
-﻿using SendArchive.Files;
+﻿using SendArchive.Email;
+using SendArchive.Files;
 using SendArchive.Settings;
-using SendArchive.Email;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System;
+using System.Threading.Tasks;
 
 namespace SendArchive
 {
@@ -27,7 +28,7 @@ namespace SendArchive
         private ObservableCollection<FileSpecification> _collectionFiles;
 
         // Field collection messages
-        private ObservableCollection<Message> _collectionMessage;
+        private ObservableCollection<ResultSending> _collectionResultSending;
 
         // Field total size files
         private double _totalSize = 0;
@@ -66,14 +67,14 @@ namespace SendArchive
         }
 
         // Collection message
-        public ObservableCollection<Message> CollectionMessages
+        public ObservableCollection<ResultSending> CollectionResultSending
         {
-            get => _collectionMessage;
+            get => _collectionResultSending;
             set
             {
-                if (_collectionMessage != value)
+                if (_collectionResultSending != value)
                 {
-                    _collectionMessage = value;
+                    _collectionResultSending = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -250,9 +251,31 @@ namespace SendArchive
                 return _commandSendMessage ?? (_commandSendMessage = new RelayCommand(o =>
                 {
                     TabMailWindow = TabMailWindow.TabItemResult;
-                    //CreatesMessages();
-                    //await SendMessagesAsync();
+
+                    // Creating a collection of messages with results of sending
+                    CreatesMessages();
+
+                    // Send message
+                    Send();
+
                 }, o => CollectionFiles != null && CollectionFiles.Count != 0 && !string.IsNullOrEmpty(_addresseeMessage)));
+            }
+        }
+
+        // Command repeat send message
+        private RelayCommand _commandRepeatSendMessage;
+        public RelayCommand CommandRepeatSendMessage
+        {
+            get
+            {
+                return _commandRepeatSendMessage ?? (_commandRepeatSendMessage = new RelayCommand(async o =>
+                {
+                    //TODO You need to track the changes in the message, the recipients, the subject, the text
+
+                    var result = (ResultSending)o;
+                    await SendMessageAsync(result);
+                }));
+
             }
         }
 
@@ -264,9 +287,9 @@ namespace SendArchive
             {
                 return _commandClearCollectionMessage ?? (_commandClearCollectionMessage = new RelayCommand(o =>
                 {
-                    _collectionMessage.Clear();
-                    _collectionMessage = null;
-                }, o => _collectionMessage != null && _collectionMessage.Count > 0));
+                    _collectionResultSending.Clear();
+                    _collectionResultSending = null;
+                }, o => _collectionResultSending != null && _collectionResultSending.Count > 0));
             }
         }
 
@@ -283,82 +306,128 @@ namespace SendArchive
 
         #endregion Public Constrctor
 
-        private void CreatesMessages()
+        #region Private Method
+
+        // Method for send messages
+        private async void Send()
         {
-            
-            //if (_collectionFiles == null || _collectionFiles.Count == 0)
-            //{
-            //    return;
-            //}
-
-            //int indexMessage = 0;
-            //string subjectMessageNotFirstMessage = "письмо из";
-            //string[] addressee = GetAddressee(_addresseeMessage);
-
-            //if (addressee == null || addressee.Length == 0)
-            //{
-            //    return;
-            //}
-
-            //CollectionMessages = new ObservableCollection<Message>();
-            //foreach (var file in _collectionFiles)
-            //{
-            //    if (indexMessage == 0)
-            //    {
-            //        _emailService.CreateMessage(message =>
-            //        {
-            //            //_collectionMessage.Add(new Message()
-            //            //{
-            //            //    Addressee = message.Addressee,
-            //            //    Attachments = message.Attachments,
-            //            //    Body = message.Body,
-            //            //    Subject = message.Subject
-            //            //});
-            //            _collectionMessage.Add(message);
-            //        }, addressee, _subjectMessage, _textMessage, _signatureMessage, new string[] { file.Path });
-            //    }
-            //    else
-            //    {
-            //        _emailService.CreateMessage(message =>
-            //        {
-            //            //_collectionMessage.Add(new Message()
-            //            //{
-            //            //    Addressee = message.Addressee,
-            //            //    Attachments = message.Attachments,
-            //            //    Body = message.Body,
-            //            //    Subject = message.Subject
-            //            //});
-            //            _collectionMessage.Add(message);
-            //        }, addressee, $"{indexMessage + 1} {subjectMessageNotFirstMessage} {_collectionFiles.Count}", string.Empty, string.Empty, new string[] { file.Path });
-            //    }
-
-            //    indexMessage++;
-            //}
-        }
-
-        private async System.Threading.Tasks.Task SendMessagesAsync()
-        {
-            //if (_collectionMessage == null || _collectionMessage.Count == 0)
-            //{
-            //    return;
-            //}
-            //foreach(var msg in _collectionMessage)
-            //{
-            //    await _emailService.SendEmailAsync(msg);
-            //}
-           
-        }
-
-        private string[] GetAddressee(string addresseeMessage)
-        {
-            if (string.IsNullOrEmpty(addresseeMessage))
+            foreach (var result in _collectionResultSending)
             {
-                return null;
+                await SendMessageAsync(result);
+            }
+        }
+
+        // Method for send message
+        private async Task SendMessageAsync(ResultSending resultSending)
+        {
+            resultSending.StatusMessage = StatusMessage.Sending;
+            Result result = await _emailService.SendEmailAsync(new Email.Message()
+            {
+                Attachments = resultSending.Message.Attachments,
+                Body = resultSending.Message.Text + Environment.NewLine + resultSending.Message.Signature,
+                Recipients = resultSending.Message.Recipients,
+                Subject = resultSending.Message.Subject,
+                CanRequestDeliveryReport = resultSending.Message.CanRequestDeliveryReport,
+                CanRequestReadReport = resultSending.Message.CanRequestReadReport
+            });
+
+            resultSending.DateTimeSending = result.DateTimeSending;
+
+            if (result.IsSent)
+            {
+                resultSending.StatusMessage = StatusMessage.Sent;
             }
             else
             {
-                return addresseeMessage.Replace(" ", "").Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                resultSending.StatusMessage = StatusMessage.Fail;
+                resultSending.WhyNotSend = result.WhyNotSend;
             }
         }
+
+        // Method for creating a collection of messages with results of sending
+        private void CreatesMessages()
+        {
+            // Check for files and the recipient
+            if (_collectionFiles?.Count == 0 || string.IsNullOrEmpty(_addresseeMessage))
+            {
+                return;
+            }
+
+            // Get the recipients in the form of an array
+            string[] recipients = GetRecipients(_addresseeMessage);
+
+            if (recipients?.Length == 0)
+            {
+                return;
+            }
+
+            // set the initial value of the message id
+            int idMessage = 0;
+
+            // TODO You must create a topic for the language you select
+            string subjectMessageNotFirstMessage = "message of";
+
+            // TODO you need to get from the settings file
+            bool canRequestDeliveryReport = true;
+            bool canRequestReadReport = true;
+            bool canRequestAllReportForNotFirstMessage = false;
+
+            // Create a collection of messages to send
+            CollectionResultSending = new ObservableCollection<ResultSending>();
+
+            // Browse collection of files
+            foreach (var file in _collectionFiles)
+            {
+                // Create new message and set ID, Recipients, Attachments
+                Message msg = new Message()
+                {
+                    ID = idMessage,
+                    Recipients = recipients,
+                    Attachments = new string[] { file.Path }
+                };
+
+                // If the message is the first, then it has a subject, the text, the signature, the request report is different
+                if (idMessage == 0)
+                {
+                    msg.Subject = $"{_subjectMessage} ({idMessage + 1} {subjectMessageNotFirstMessage} {_collectionFiles.Count})";
+                    msg.Text = _textMessage;
+                    msg.Signature = _signatureMessage;
+                    msg.CanRequestDeliveryReport = canRequestDeliveryReport;
+                    msg.CanRequestReadReport = canRequestReadReport;
+                }
+                else
+                {
+                    msg.Subject = $"{idMessage + 1} {subjectMessageNotFirstMessage} {_collectionFiles.Count}";
+                    msg.Text = msg.Subject;
+                    if (canRequestAllReportForNotFirstMessage)
+                    {
+                        msg.CanRequestDeliveryReport = msg.CanRequestReadReport = true;
+                    }
+                }
+
+                // Create the result sending message
+                var result = new ResultSending()
+                {
+                    Message = msg,
+                    DateTimeSending = DateTime.Now,
+                    StatusMessage = StatusMessage.ReadyToSend,
+                    WhyNotSend = string.Empty
+                };
+                _collectionResultSending.Add(result);
+                idMessage++;
+            }
+        }
+
+        /// <summary>
+        /// Method for converting a string of recipients to an array
+        /// </summary>
+        /// <param name="addresseeMessage">String recipients. Example "test@test.ru;test2@test.ru"</param>
+        /// <returns></returns>
+        private string[] GetRecipients(string addresseeMessage)
+        {
+            return addresseeMessage.Replace(" ", "").Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        #endregion Private Method
     }
 }

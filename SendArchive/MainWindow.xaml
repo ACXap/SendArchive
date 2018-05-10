@@ -314,7 +314,7 @@
                     <!--  DataGrid list files  -->
                     <DataGrid
                         Grid.Row="1"
-                        ItemsSource="{Binding CollectionMessages}"
+                        ItemsSource="{Binding CollectionResultSending}"
                         Style="{StaticResource DataGridFiles}">
                         <DataGrid.Columns>
 
@@ -328,7 +328,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <!--  TextBlock letter subject  -->
-                                        <TextBlock Text="{Binding Subject}">
+                                        <TextBlock Text="{Binding Message.Subject}">
 
                                             <!--  Data message  -->
                                             <TextBlock.ToolTip>
@@ -353,7 +353,7 @@
                                                         Grid.Row="0"
                                                         Grid.Column="1"
                                                         VerticalAlignment="Center"
-                                                        ItemsSource="{Binding Addressee}">
+                                                        ItemsSource="{Binding Message.Recipients}">
                                                         <ItemsControl.ItemsPanel>
                                                             <ItemsPanelTemplate>
                                                                 <WrapPanel Orientation="Horizontal" />
@@ -376,7 +376,7 @@
                                                         Grid.Row="1"
                                                         Grid.Column="1"
                                                         VerticalAlignment="Center"
-                                                        Text="{Binding Body}" />
+                                                        Text="{Binding Message.Text}" />
 
                                                     <!--  Files in a  message  -->
                                                     <TextBlock
@@ -388,7 +388,7 @@
                                                         Grid.Row="2"
                                                         Grid.Column="1"
                                                         VerticalAlignment="Center"
-                                                        ItemsSource="{Binding Attachments}">
+                                                        ItemsSource="{Binding Message.Attachments}">
                                                         <ItemsControl.ItemsPanel>
                                                             <ItemsPanelTemplate>
                                                                 <WrapPanel Orientation="Horizontal" />
@@ -461,7 +461,7 @@
                                     <DataTemplate>
 
                                         <!--  TextBlock date send letter  -->
-                                        <TextBlock Text="{Binding DateSend}" />
+                                        <TextBlock Text="{Binding DateTimeSending}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -472,7 +472,10 @@
                                     <DataTemplate>
 
                                         <!--  Button repeated send  -->
-                                        <Button Style="{StaticResource ButtonRepeatSendMessage}" />
+                                        <Button
+                                            Command="{Binding DataContext.CommandRepeatSendMessage, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource ButtonRepeatSendMessage}" />
 
 
                                     </DataTemplate>
