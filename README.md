@@ -10,5 +10,4 @@ But it takes a lot of work.
 1) Add languages.
 2) Processing the settings file
 3) Error handling
-4) Cancel sending
 
