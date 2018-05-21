@@ -48,6 +48,12 @@ namespace SendArchive
         // Field signature message
         private string _signatureMessage;
 
+        // Field is start sending
+        private bool _isStartSending;
+
+        // Field count sending email
+        private int _countSendingEmail;
+
         #endregion Private Field
 
         #region Public Properties
@@ -164,6 +170,34 @@ namespace SendArchive
             }
         }
 
+        // Start sending
+        public bool IsStartSending
+        {
+            get => _isStartSending;
+            set
+            {
+                if (_isStartSending != value)
+                {
+                    _isStartSending = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        // Count sending email
+        public int CountSendingEmail
+        {
+            get => _countSendingEmail;
+            set
+            {
+                if (_countSendingEmail != value)
+                {
+                    _countSendingEmail = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         #endregion Public Properties
 
         #region Command
@@ -250,6 +284,10 @@ namespace SendArchive
             {
                 return _commandSendMessage ?? (_commandSendMessage = new RelayCommand(o =>
                 {
+                    // Start sending
+                    IsStartSending = true;
+
+                    // Open tab with result;
                     TabMailWindow = TabMailWindow.TabItemResult;
 
                     // Creating a collection of messages with results of sending
@@ -258,7 +296,7 @@ namespace SendArchive
                     // Send message
                     Send();
 
-                }, o => CollectionFiles != null && CollectionFiles.Count != 0 && !string.IsNullOrEmpty(_addresseeMessage)));
+                }, o => CollectionFiles != null && CollectionFiles.Count != 0 && !string.IsNullOrEmpty(_addresseeMessage) && !_isStartSending));
             }
         }
 
@@ -272,8 +310,12 @@ namespace SendArchive
                 {
                     //TODO You need to track the changes in the message, the recipients, the subject, the text
 
+                    IsStartSending = true;
+
                     var result = (ResultSending)o;
                     await SendMessageAsync(result);
+
+                    IsStartSending = false;
                 }));
 
             }
@@ -290,6 +332,19 @@ namespace SendArchive
                     _collectionResultSending.Clear();
                     _collectionResultSending = null;
                 }, o => _collectionResultSending != null && _collectionResultSending.Count > 0));
+            }
+        }
+
+        // Command for cancel sending email
+        private RelayCommand _commandCancelSending;
+        public RelayCommand CommandCancelSending
+        {
+            get
+            {
+                return _commandCancelSending ?? (_commandCancelSending = new RelayCommand(o =>
+                {
+                    IsStartSending = false;
+                }, o => _isStartSending));
             }
         }
 
@@ -311,36 +366,53 @@ namespace SendArchive
         // Method for send messages
         private async void Send()
         {
+            CountSendingEmail = 0;
             foreach (var result in _collectionResultSending)
             {
+                CountSendingEmail++;
                 await SendMessageAsync(result);
+                if (_isStartSending)
+                {
+                    await Task.Delay(5000); // TODO Delay in sending letters from settings
+                }
             }
+
+            // Stop sending
+            IsStartSending = false;
         }
 
         // Method for send message
         private async Task SendMessageAsync(ResultSending resultSending)
         {
-            resultSending.StatusMessage = StatusMessage.Sending;
-            Result result = await _emailService.SendEmailAsync(new Email.Message()
+            if (_isStartSending)
             {
-                Attachments = resultSending.Message.Attachments,
-                Body = resultSending.Message.Text + Environment.NewLine + resultSending.Message.Signature,
-                Recipients = resultSending.Message.Recipients,
-                Subject = resultSending.Message.Subject,
-                CanRequestDeliveryReport = resultSending.Message.CanRequestDeliveryReport,
-                CanRequestReadReport = resultSending.Message.CanRequestReadReport
-            });
+                resultSending.StatusMessage = StatusMessage.Sending;
+                Result result = await _emailService.SendEmailAsync(new Email.Message()
+                {
+                    Attachments = resultSending.Message.Attachments,
+                    Body = resultSending.Message.Text + Environment.NewLine + resultSending.Message.Signature,
+                    Recipients = resultSending.Message.Recipients,
+                    Subject = resultSending.Message.Subject,
+                    CanRequestDeliveryReport = resultSending.Message.CanRequestDeliveryReport,
+                    CanRequestReadReport = resultSending.Message.CanRequestReadReport
+                });
 
-            resultSending.DateTimeSending = result.DateTimeSending;
+                resultSending.DateTimeSending = result.DateTimeSending;
 
-            if (result.IsSent)
-            {
-                resultSending.StatusMessage = StatusMessage.Sent;
+                if (result.IsSent)
+                {
+                    resultSending.StatusMessage = StatusMessage.Sent;
+                }
+                else
+                {
+                    resultSending.StatusMessage = StatusMessage.Fail;
+                    resultSending.WhyNotSend = result.WhyNotSend;
+                }
             }
             else
             {
-                resultSending.StatusMessage = StatusMessage.Fail;
-                resultSending.WhyNotSend = result.WhyNotSend;
+                resultSending.StatusMessage = StatusMessage.Cancel;
+                resultSending.DateTimeSending = DateTime.Now;
             }
         }
 

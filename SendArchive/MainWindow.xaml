@@ -11,6 +11,7 @@
     Height="450"
     mc:Ignorable="d">
     <Window.Resources>
+        <local:ConverterBoolToVisibility x:Key="ConverterBoolToVisibility" />
         <local:ConverterPathFileToIconImage x:Key="ConverterPathFileToIconImage" />
         <local:ConverterSizeFileToKb x:Key="ConverterSizeFileToKb" />
         <local:ConverterTabEnumToTabIndex x:Key="ConverterTabEnumToTabIndex" />
@@ -290,16 +291,42 @@
                     <!--  Grid Result Header  -->
                     <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Style="{StaticResource TextFileList}" Text="{DynamicResource TextBlockResultList}" />
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <!--  Grid for progress  -->
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel
+                                Grid.Row="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource TextFileList}" Text="{Binding CountSendingEmail, FallbackValue=0}" />
+                                <TextBlock Style="{StaticResource TextFileList}" Text="/" />
+                                <TextBlock Style="{StaticResource TextFileList}" Text="{Binding CollectionResultSending.Count, FallbackValue=0}" />
+                            </StackPanel>
+                            <ProgressBar
+                                Grid.Row="1"
+                                Margin="5"
+                                Maximum="{Binding CollectionResultSending.Count}"
+                                Value="{Binding CountSendingEmail}" />
+                        </Grid>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
 
                             <!--  Button cancel send message  -->
-                            <Button Content="{DynamicResource ButtonResultCancelSend}" Style="{StaticResource ButtonFile}" />
+                            <Button
+                                Command="{Binding CommandCancelSending}"
+                                Content="{DynamicResource ButtonResultCancelSend}"
+                                Style="{StaticResource ButtonFile}" />
 
                             <!--  Button clear result list  -->
                             <Button
